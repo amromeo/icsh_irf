@@ -2,4 +2,4 @@
 
 A [workflowr][] project.
 
-[workflowr]: https://github.com/jdblischak/workflowr
+[project website]: https://amromeo.github.io/icsh_irf/
