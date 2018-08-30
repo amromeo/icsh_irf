@@ -8,6 +8,10 @@ output: workflowr::wflow_html
 ## Introduction
 
 ```{r}
-print("test")
+libloc<-"~/icsh_irf/library"
+library(purrr,lib.loc=libloc)
+library(ggplot2,lib.loc=libloc)
+library(dplyr,lib.loc=libloc)
+
 ```
 
