@@ -1,0 +1,76 @@
+---
+title: "HUP_CHOP Correlation"
+author: "Amrom"
+date: "2018-08-31"
+output: workflowr::wflow_html
+---
+
+## Introduction
+
+```{r}
+libloc<-"~/icsh_irf/library"
+library(purrr,lib.loc=libloc)
+library(tidyr,lib.loc=libloc)
+library(stringr,lib.loc=libloc)
+library(ggplot2,lib.loc=libloc)
+library(dplyr,lib.loc=libloc)
+library(here,lib.loc=libloc)
+library(janitor,lib.loc=libloc)
+library(mcr,lib.loc=libloc)
+library(readxl,lib.loc=libloc)
+
+
+
+```
+
+
+```{r}
+load(here("prepped_data","hup.Rdata"))
+load(here("prepped_data","chop.Rdata"))
+
+```
+
+```{r}
+matchup<-read_xlsx(here("data","sample matchup.xlsx"))
+```
+
+
+```{r}
+matchup <- matchup %>% 
+  mutate(date = format(date, "%m-%d-%Y")) %>% 
+  mutate(chop_id = paste0(date,"__",sys_id))
+
+chop <- chop %>% 
+  mutate(chop_id = paste0(date,"__",sample_no)) %>% 
+  mutate(chop_id = str_replace_all(chop_id,"/","-"))
+
+colnames(chop)[3:5] <- paste0(colnames(chop)[3:5],"_chop")
+colnames(hup)[3:5] <- paste0(colnames(hup)[3:5],"_hup")
+
+df<-matchup %>% 
+  left_join(chop, by="chop_id") %>% 
+  left_join(hup,by=c("dxh_id" = "Sample")) %>% 
+  mutate(IRF_hup = 100*IRF_hup)
+```
+
+
+
+```{r}
+ggplot(df,aes(irf_percent_chop,IRF_hup))+
+  geom_point()+
+  geom_smooth()+
+  scale_x_log10()
+  
+```
+
+
+```{r}
+
+
+pbreg<-mcreg(log(df$irf_percent_chop),df$IRF_hup, method.reg = "PaBa",na.rm = TRUE)
+pbreg@para
+
+plot(pbreg)
+
+```
+
