@@ -10,8 +10,54 @@ output: workflowr::wflow_html
 ```{r}
 libloc<-"~/icsh_irf/library"
 library(purrr,lib.loc=libloc)
+library(tidyr,lib.loc=libloc)
+library(stringr,lib.loc=libloc)
 library(ggplot2,lib.loc=libloc)
 library(dplyr,lib.loc=libloc)
+library(here,lib.loc=libloc)
+library(readr,lib.loc=libloc)
+library(janitor,lib.loc=libloc)
+
+```
+
+## Collect CHOP Data
+
+```{r warning=FALSE, message=FALSE}
+mydirs<-list.dirs(here("data"))
+mydirs <- subset(mydirs,str_detect(mydirs,"18$"))
+
+mydf <- tibble(dirs = mydirs)
+
+selector<-function(df_name){
+require(snakecase,lib.loc = libloc)
+    read_csv(df_name, skip = 1) %>% 
+    tbl_df() %>% 
+    select(starts_with("Sample N"),
+           Date,
+           starts_with("RET"),
+           starts_with("IRF")
+           ) %>% 
+    clean_names() %>% 
+      select(-contains("_m"))  %>% 
+      mutate_at(3:6,as.numeric) %>% 
+      mutate_at(1,as.character)
+  }
+
+test<-mydf %>% 
+  mutate(files = map(dirs,dir,"\\.csv$")) %>% 
+  unnest(files) %>% 
+  mutate(glued = paste0(dirs,"/",files)) %>% 
+  filter(!str_detect(glued,"_2")) %>% 
+  filter(!str_detect(glued,"_3")) %>% 
+  filter(!str_detect(glued,"RESEARCH")) %>% 
+  mutate(dfs = map(glued,selector)) %>% 
+  unnest(dfs) %>% 
+  select(-c(1:3))
+
+```
+
+
+```{r}
 
 ```
 
