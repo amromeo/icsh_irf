@@ -6,6 +6,9 @@ output:
     toc: false
 ---
 
-Welcome to my research website.
 
-Click on this [link](load_data.html) to see my results.
+## IRF Correlations
+
+Click on this [link](load_data.html) to see the script for loading data.
+
+Click over [here](irf_cor.html) to see the IRF correlation.
