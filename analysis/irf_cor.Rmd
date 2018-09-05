@@ -56,21 +56,54 @@ df<-matchup %>%
 
 
 ```{r}
-ggplot(df,aes(irf_percent_chop,IRF_hup))+
+
+p1<-ggplot(df,aes(irf_percent_chop,IRF_hup))+
   geom_point()+
   geom_smooth()+
-  scale_x_log10()
+  labs(x="IRF Sysmex XN",y="IRF BC DxH")
+
+
+p2<-ggplot(df,aes(irf_percent_chop,IRF_hup))+
+  geom_point()+
+  geom_smooth()+
+  scale_x_log10()+
+  labs(x="log IRF Sysmex XN",y="IRF BC DxH")
+
+plot_grid(p1,p2)
   
 ```
 
 
 ```{r}
 
+pbreg<-mcreg(log10(df$irf_percent_chop),(df$IRF_hup), method.reg = "Deming",na.rm = TRUE)
+# 
+# b0<-pbreg@glob.coef[1]
+# b1<-pbreg@glob.coef[2]
+# 
+# 
+# ggplot(df,aes(irf_percent_chop,IRF_hup))+
+#   geom_point()+
+#   geom_abline(slope = b1,intercept = b0)+
+#   reg.conf.intervals(df$irf_percent_chop,df$IRF_hup,pbreg)
+#   scale_x_log10()+
+#   labs(x="IRF Sysmex XN (log scale)",y="IRF BC DxH")
+# 
 
-pbreg<-mcreg(log(df$irf_percent_chop),df$IRF_hup, method.reg = "PaBa",na.rm = TRUE)
-pbreg@para
 
-plot(pbreg)
+plot(pbreg,  x.lab = "Log Sysmex XN", y.lab = "BC DxH")
+
+# sctest(log10(df$irf_percent_chop)~df$IRF_hup)
+
+```
+
+```{r}
+
+printSummary(pbreg)
+
+
+predict(pbreg,data = c(25))
+
 
 ```
 
