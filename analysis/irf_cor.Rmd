@@ -7,7 +7,8 @@ output: workflowr::wflow_html
 
 ## Introduction
 
-```{r}
+
+```{r, echo=FALSE}
 libloc<-"~/icsh_irf/library"
 library(purrr,lib.loc=libloc)
 library(tidyr,lib.loc=libloc)
@@ -18,6 +19,7 @@ library(here,lib.loc=libloc)
 library(janitor,lib.loc=libloc)
 library(mcr,lib.loc=libloc)
 library(readxl,lib.loc=libloc)
+library(cowplot,lib.loc=libloc)
 
 
 
@@ -97,13 +99,4 @@ plot(pbreg,  x.lab = "Log Sysmex XN", y.lab = "BC DxH")
 
 ```
 
-```{r}
-
-printSummary(pbreg)
-
-
-predict(pbreg,data = c(25))
-
-
-```
 

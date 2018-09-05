@@ -323,11 +323,11 @@ div.section {
 </div>
 
 
-<p><strong>Last updated:</strong> 2018-08-31</p>
+<p><strong>Last updated:</strong> 2018-09-05</p>
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </details>
 </li>
 <li>
@@ -346,16 +346,16 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/amromeo/icsh_irf/tree/380f5182c28c2897f95f5d73e174a3e168f4dc6a" target="_blank">380f518</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/amromeo/icsh_irf/tree/031d930d48e86a4eca908bc38a0d92f87b741521" target="_blank">031d930</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
     Ignored:    library/
 
 Untracked files:
-    Untracked:  analysis/irf_cor.Rmd
     Untracked:  data/4-17-18/
     Untracked:  data/4-25-18/
     Untracked:  data/5-17-18/
@@ -367,19 +367,94 @@ Untracked files:
     Untracked:  data/7-3-18/
     Untracked:  data/8-1-18/
 
+Unstaged changes:
+    Modified:   analysis/irf_cor.Rmd
+
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
 </li>
 </ul>
+<details> <summary> <small><strong>Expand here to see past versions:</strong></small> </summary>
+<ul>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+File
+</th>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:left;">
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/031d930d48e86a4eca908bc38a0d92f87b741521/analysis/irf_cor.Rmd" target="_blank">031d930</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-05
+</td>
+<td style="text-align:left;">
+wflow_git_commit(all = TRUE)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/29a0268be58ffe7470181dd835dc9da0c9fd1949/analysis/irf_cor.Rmd" target="_blank">29a0268</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-08-31
+</td>
+<td style="text-align:left;">
+correlation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/amromeo/icsh_irf/29a0268be58ffe7470181dd835dc9da0c9fd1949/docs/irf_cor.html" target="_blank">29a0268</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-08-31
+</td>
+<td style="text-align:left;">
+correlation
+</td>
+</tr>
+</tbody>
+</table>
+</ul>
+<p></details></p>
 <hr />
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<pre class="r"><code>libloc&lt;-&quot;~/icsh_irf/library&quot;
-library(purrr,lib.loc=libloc)
-library(tidyr,lib.loc=libloc)
-library(stringr,lib.loc=libloc)
-library(ggplot2,lib.loc=libloc)
-library(dplyr,lib.loc=libloc)</code></pre>
 <pre><code>
 Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>The following object is masked from &#39;package:ggplot2&#39;:
@@ -391,11 +466,12 @@ Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>The following objects are masked from &#39;package:base&#39;:
 
     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(here,lib.loc=libloc)</code></pre>
 <pre><code>here() starts at /home/obstfelda/icsh_irf</code></pre>
-<pre class="r"><code>library(janitor,lib.loc=libloc)
-library(mcr,lib.loc=libloc)
-library(readxl,lib.loc=libloc)</code></pre>
+<pre><code>
+Attaching package: &#39;cowplot&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:ggplot2&#39;:
+
+    ggsave</code></pre>
 <pre class="r"><code>load(here(&quot;prepped_data&quot;,&quot;hup.Rdata&quot;))
 load(here(&quot;prepped_data&quot;,&quot;chop.Rdata&quot;))</code></pre>
 <pre class="r"><code>matchup&lt;-read_xlsx(here(&quot;data&quot;,&quot;sample matchup.xlsx&quot;))</code></pre>
@@ -414,24 +490,108 @@ df&lt;-matchup %&gt;%
   left_join(chop, by=&quot;chop_id&quot;) %&gt;% 
   left_join(hup,by=c(&quot;dxh_id&quot; = &quot;Sample&quot;)) %&gt;% 
   mutate(IRF_hup = 100*IRF_hup)</code></pre>
-<pre class="r"><code>ggplot(df,aes(irf_percent_chop,IRF_hup))+
+<pre class="r"><code>p1&lt;-ggplot(df,aes(irf_percent_chop,IRF_hup))+
   geom_point()+
   geom_smooth()+
-  scale_x_log10()</code></pre>
+  labs(x=&quot;IRF Sysmex XN&quot;,y=&quot;IRF BC DxH&quot;)
+
+
+p2&lt;-ggplot(df,aes(irf_percent_chop,IRF_hup))+
+  geom_point()+
+  geom_smooth()+
+  scale_x_log10()+
+  labs(x=&quot;log IRF Sysmex XN&quot;,y=&quot;IRF BC DxH&quot;)
+
+plot_grid(p1,p2)</code></pre>
 <pre><code>`geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <pre><code>Warning: Removed 3 rows containing non-finite values (stat_smooth).</code></pre>
 <pre><code>Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
+<pre><code>`geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<pre><code>Warning: Removed 3 rows containing non-finite values (stat_smooth).
+
+Warning: Removed 3 rows containing missing values (geom_point).</code></pre>
 <p><img src="figure/irf_cor.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>pbreg&lt;-mcreg(log(df$irf_percent_chop),df$IRF_hup, method.reg = &quot;PaBa&quot;,na.rm = TRUE)</code></pre>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-5-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/29a0268be58ffe7470181dd835dc9da0c9fd1949/docs/figure/irf_cor.Rmd/unnamed-chunk-5-1.png" target="_blank">29a0268</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-08-31
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
+<pre class="r"><code>pbreg&lt;-mcreg(log10(df$irf_percent_chop),(df$IRF_hup), method.reg = &quot;Deming&quot;,na.rm = TRUE)</code></pre>
 <pre><code>Please note: 
 3 of 156 observations contain missing values and have been removed.
 Number of data points in analysis is 153.</code></pre>
-<pre class="r"><code>pbreg@para</code></pre>
-<pre><code>                EST SE       LCI       UCI
-Intercept -1.603206 NA -7.671018  3.311323
-Slope     19.502834 NA 17.475033 21.676218</code></pre>
-<pre class="r"><code>plot(pbreg)</code></pre>
+<pre class="r"><code># 
+# b0&lt;-pbreg@glob.coef[1]
+# b1&lt;-pbreg@glob.coef[2]
+# 
+# 
+# ggplot(df,aes(irf_percent_chop,IRF_hup))+
+#   geom_point()+
+#   geom_abline(slope = b1,intercept = b0)+
+#   reg.conf.intervals(df$irf_percent_chop,df$IRF_hup,pbreg)
+#   scale_x_log10()+
+#   labs(x=&quot;IRF Sysmex XN (log scale)&quot;,y=&quot;IRF BC DxH&quot;)
+# 
+
+
+plot(pbreg,  x.lab = &quot;Log Sysmex XN&quot;, y.lab = &quot;BC DxH&quot;)</code></pre>
 <p><img src="figure/irf_cor.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-6-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/29a0268be58ffe7470181dd835dc9da0c9fd1949/docs/figure/irf_cor.Rmd/unnamed-chunk-6-1.png" target="_blank">29a0268</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-08-31
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
+<pre class="r"><code># sctest(log10(df$irf_percent_chop)~df$IRF_hup)</code></pre>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
@@ -455,9 +615,9 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
- [1] bindrcpp_0.2.2 readxl_1.1.0   mcr_1.2.1      janitor_1.1.1 
- [5] here_0.1       dplyr_0.7.6    ggplot2_3.0.0  stringr_1.3.1 
- [9] tidyr_0.8.1    purrr_0.2.5   
+ [1] bindrcpp_0.2.2 cowplot_0.9.3  readxl_1.1.0   mcr_1.2.1     
+ [5] janitor_1.1.1  here_0.1       dplyr_0.7.6    ggplot2_3.0.0 
+ [9] stringr_1.3.1  tidyr_0.8.1    purrr_0.2.5   
 
 loaded via a namespace (and not attached):
  [1] Rcpp_0.12.18      cellranger_1.1.0  pillar_1.3.0     
