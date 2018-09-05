@@ -8,8 +8,11 @@ output: workflowr::wflow_html
 ## Introduction
 
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 libloc<-"~/icsh_irf/library"
+library(knitr)
+opts_chunk$set(fig.width=12, fig.height=8, fig.path='Figs/',
+               echo=FALSE, warning=FALSE, message=FALSE)
 library(purrr,lib.loc=libloc)
 library(tidyr,lib.loc=libloc)
 library(stringr,lib.loc=libloc)
@@ -53,6 +56,10 @@ df<-matchup %>%
   left_join(chop, by="chop_id") %>% 
   left_join(hup,by=c("dxh_id" = "Sample")) %>% 
   mutate(IRF_hup = 100*IRF_hup)
+
+df %>% 
+  select(date.x,starts_with("ret"),starts_with("irf")) %>% 
+  DT::datatable(colnames = c("Date","RET% XN","RET XN","RET% DxH","RET DxH","IRF XN","IRF DxH"))
 ```
 
 
@@ -69,14 +76,18 @@ p2<-ggplot(df,aes(irf_percent_chop,IRF_hup))+
   geom_point()+
   geom_smooth()+
   scale_x_log10()+
-  labs(x="log IRF Sysmex XN",y="IRF BC DxH")
+  labs(x="IRF Sysmex XN (log axis)",y="IRF BC DxH")
 
-plot_grid(p1,p2)
+
+
+myp<-plot_grid(p1,p2,labels = "AUTO")
+myp2<-add_sub(myp, "A. Plot represents correlation of IRF between DxH and XN.\nB. Correlation plotting XN data on log scale", x = 0, hjust = 0)
+ggdraw(myp2)
   
 ```
 
 
-```{r}
+```{r, results='markup'}
 
 pbreg<-mcreg(log10(df$irf_percent_chop),(df$IRF_hup), method.reg = "Deming",na.rm = TRUE)
 # 
