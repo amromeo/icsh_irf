@@ -13,7 +13,7 @@
 
 <meta name="date" content="2018-08-31" />
 
-<title>HUP_CHOP Correlation</title>
+<title>BC DxH/Sysmex XN IRF Correlation</title>
 
 <script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -321,7 +321,7 @@ div.section {
 
 
 
-<h1 class="title toc-ignore">HUP_CHOP Correlation</h1>
+<h1 class="title toc-ignore">BC DxH/Sysmex XN IRF Correlation</h1>
 <h4 class="author"><em>Amrom</em></h4>
 <h4 class="date"><em>2018-08-31</em></h4>
 
@@ -351,27 +351,26 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/amromeo/icsh_irf/tree/3c7020173a05c50c47d5e00496f7920602264689" target="_blank">3c70201</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/amromeo/icsh_irf/tree/427447fc347a5993972e75e7ab73b29a9085ef77" target="_blank">427447f</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    data/4-17-18/
+    Ignored:    data/4-25-18/
+    Ignored:    data/5-17-18/
+    Ignored:    data/5-3-18/
+    Ignored:    data/5-30-18/
+    Ignored:    data/5-8-18/
+    Ignored:    data/6-14-18/
+    Ignored:    data/7-10-18/
+    Ignored:    data/7-3-18/
+    Ignored:    data/8-1-18/
     Ignored:    library/
 
-Untracked files:
-    Untracked:  data/4-17-18/
-    Untracked:  data/4-25-18/
-    Untracked:  data/5-17-18/
-    Untracked:  data/5-3-18/
-    Untracked:  data/5-30-18/
-    Untracked:  data/5-8-18/
-    Untracked:  data/6-14-18/
-    Untracked:  data/7-10-18/
-    Untracked:  data/7-3-18/
-    Untracked:  data/8-1-18/
-
 Unstaged changes:
+    Modified:   .gitignore
     Modified:   analysis/irf_cor.Rmd
 
 </code></pre>
@@ -401,6 +400,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/amromeo/icsh_irf/427447fc347a5993972e75e7ab73b29a9085ef77/docs/irf_cor.html" target="_blank">427447f</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-06
+</td>
+<td style="text-align:left;">
+latest
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -611,6 +627,17 @@ Date
 <tbody>
 <tr>
 <td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/427447fc347a5993972e75e7ab73b29a9085ef77/docs/figure/irf_cor.Rmd/unnamed-chunk-6-1.png" target="_blank">427447f</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-06
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 <a href="https://github.com/amromeo/icsh_irf/blob/3c7020173a05c50c47d5e00496f7920602264689/docs/figure/irf_cor.Rmd/unnamed-chunk-6-1.png" target="_blank">3c70201</a>
 </td>
 <td style="text-align:left;">
@@ -645,15 +672,165 @@ Amrom
 </tbody>
 </table>
 <p></details> <img src="figure/irf_cor.Rmd/unnamed-chunk-6-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-6-2.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/427447fc347a5993972e75e7ab73b29a9085ef77/docs/figure/irf_cor.Rmd/unnamed-chunk-6-2.png" target="_blank">427447f</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-06
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="deming-regression" class="section level2">
 <h2>Deming regression</h2>
 <p>A Deming regression model was fitted using the log transformed XN IRF data and the raw DxH data.</p>
-<p>Results demonstrate a pearson correlation coefficient of 0.833. Slope estimate was 47.899 (95% CI 53.092-43.44) and intercept was -5.52 (95% CI -0.427–11.532). The model is plotted below.</p>
+<p>Results demonstrate a pearson correlation coefficient of 0.833. Slope estimate was 54 (95% CI 66.428-42.026) and intercept was -12.005 (95% CI 0.986–25.82). The model is plotted below.</p>
 <p><img src="figure/irf_cor.Rmd/unnamed-chunk-8-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-8-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/427447fc347a5993972e75e7ab73b29a9085ef77/docs/figure/irf_cor.Rmd/unnamed-chunk-8-1.png" target="_blank">427447f</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-06
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 <p>Using the model to generate an “adjusted” IRF for the XN, below would be the correlation plot and the bias plots.</p>
 <p><img src="figure/irf_cor.Rmd/unnamed-chunk-9-1.png" width="1152" style="display: block; margin: auto;" /></p>
-<p><img src="figure/irf_cor.Rmd/unnamed-chunk-10-1.png" width="1152" style="display: block; margin: auto;" /><img src="figure/irf_cor.Rmd/unnamed-chunk-10-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-9-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/427447fc347a5993972e75e7ab73b29a9085ef77/docs/figure/irf_cor.Rmd/unnamed-chunk-9-1.png" target="_blank">427447f</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-06
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
+<p><img src="figure/irf_cor.Rmd/unnamed-chunk-10-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-10-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/427447fc347a5993972e75e7ab73b29a9085ef77/docs/figure/irf_cor.Rmd/unnamed-chunk-10-1.png" target="_blank">427447f</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-06
+</td>
+</tr>
+</tbody>
+</table>
+<p></details> <img src="figure/irf_cor.Rmd/unnamed-chunk-10-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-10-2.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/427447fc347a5993972e75e7ab73b29a9085ef77/docs/figure/irf_cor.Rmd/unnamed-chunk-10-2.png" target="_blank">427447f</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-06
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>

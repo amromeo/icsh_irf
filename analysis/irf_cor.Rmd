@@ -1,5 +1,5 @@
 ---
-title: "HUP_CHOP Correlation"
+title: "BC DxH/Sysmex XN IRF Correlation"
 author: "Amrom"
 date: "2018-08-31"
 output: workflowr::wflow_html
@@ -7,6 +7,14 @@ output: workflowr::wflow_html
 
 ## Introduction
 
+
+At Children's Hospital of Philadelphia we assessed approximately 150 specimens. 
+
+Analyzers
+- BC DxH
+- Sysmex XN
+
+Unfortunately we could not perform testing in triplicate.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 libloc<-"~/icsh_irf/library"
@@ -39,6 +47,7 @@ load(here("prepped_data","chop.Rdata"))
 matchup<-read_xlsx(here("data","sample matchup.xlsx"))
 ```
 
+## Data
 
 ```{r}
 matchup <- matchup %>% 
@@ -63,6 +72,10 @@ df %>%
 ```
 
 
+## Plots
+
+Data was visualized with dot plots overlayed with loess smooth curves. Plot A below demonstrates a non-linear relationship between results from the two analyzers. Logarithmic transformation of the XN IRF results yielded a more linear relationship. As a result Deming regression was pursued using log transformed XN data.
+
 
 ```{r}
 
@@ -86,28 +99,98 @@ ggdraw(myp2)
   
 ```
 
+Bias Plots
+```{r}
+df<-df %>% 
+  rowwise() %>% 
+  mutate(avg = sum(IRF_hup,irf_percent_chop)/2,
+         delta = IRF_hup - irf_percent_chop,
+         delta_p = delta/avg)
 
-```{r, results='markup'}
+avg_delta<-mean(df$delta,na.rm = T)
+avg_delta_p<-mean(df$delta_p,na.rm = T)
 
-pbreg<-mcreg(log10(df$irf_percent_chop),(df$IRF_hup), method.reg = "Deming",na.rm = TRUE)
-# 
-# b0<-pbreg@glob.coef[1]
-# b1<-pbreg@glob.coef[2]
-# 
-# 
-# ggplot(df,aes(irf_percent_chop,IRF_hup))+
-#   geom_point()+
-#   geom_abline(slope = b1,intercept = b0)+
-#   reg.conf.intervals(df$irf_percent_chop,df$IRF_hup,pbreg)
-#   scale_x_log10()+
-#   labs(x="IRF Sysmex XN (log scale)",y="IRF BC DxH")
-# 
+ggplot(df,aes(avg,delta))+
+  geom_point()+
+  geom_hline(yintercept = avg_delta)+
+    geom_hline(yintercept = 0, linetype=2)+
+  labs(x="Avergage IRF",
+       y="DxH - XN")
+
+ggplot(df,aes(avg,delta_p))+
+  geom_point()+
+  geom_hline(yintercept = avg_delta_p)+
+    geom_hline(yintercept = 0, linetype=2)+
+  labs(x="Avergage IRF",
+       y="Percent difference")
+  
+```
 
 
+
+## Deming regression
+
+A Deming regression model was fitted using the log transformed XN IRF data and the raw DxH data. 
+
+```{r, results='markup', include=FALSE}
+
+pbreg<-mcreg(log10(df$irf_percent_chop),(df$IRF_hup), method.reg = "WDeming",na.rm = TRUE)
+
+b0<-pbreg@glob.coef[1] %>% round(3)
+b1<-pbreg@glob.coef[2] %>% round(3)
+estim<- pbreg@para
+
+LCI.I<-estim[1,3] %>% round(3)
+UCI.I<-estim[1,4] %>% round(3)
+LCI.S<-estim[2,3] %>% round(3)
+UCI.S<-estim[2,4] %>% round(3)
+
+pcro<-cor(log10(df$irf_percent_chop),(df$IRF_hup),use = "complete.obs",method = "pearson") %>% round(3)
+
+
+```
+
+Results demonstrate a pearson correlation coefficient of `r pcro`. Slope estimate was `r b1` (95% CI `r UCI.S`-`r LCI.S`) and intercept was `r b0` (95% CI `r UCI.I`-`r LCI.I`). The model is plotted below.
+
+```{r}
 plot(pbreg,  x.lab = "Log Sysmex XN", y.lab = "BC DxH")
 
 # sctest(log10(df$irf_percent_chop)~df$IRF_hup)
 
 ```
 
+Using the model to generate an "adjusted" IRF for the XN, below would be the correlation plot and the bias plots.
 
+```{r}
+df<-df %>% 
+  mutate(d_irf = log10(irf_percent_chop)*b1+b0) %>% 
+  rowwise() %>% 
+  mutate(avg_d = sum(IRF_hup,d_irf)/2,
+         delta_d = IRF_hup - d_irf,
+         delta_p_d = delta_d/avg_d)
+
+avg_delta_d<-mean(df$delta_d,na.rm = T)
+avg_delta_p_d<-mean(df$delta_p_d,na.rm = T)
+
+ggplot(df,aes(d_irf,IRF_hup))+
+  geom_point()+
+  geom_smooth()+
+  labs(x="Adjusted IRF Sysmex XN",y="IRF BC DxH")
+```
+
+```{r}
+ggplot(df,aes(avg_d,delta_d))+
+  geom_point()+
+  geom_hline(yintercept = avg_delta_d)+
+    geom_hline(yintercept = 0, linetype=2)+
+  labs(x="Avergage IRF",
+       y="DxH - XN")
+
+ggplot(df,aes(avg_d,delta_p_d))+
+  geom_point()+
+  geom_hline(yintercept = avg_delta_p_d)+
+    geom_hline(yintercept = 0, linetype=2)+
+  labs(x="Avergage IRF",
+       y="Percent difference")
+  
+```
