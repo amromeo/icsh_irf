@@ -183,14 +183,19 @@ ggplot(df,aes(d_irf,delta_d))+
   geom_point()+
   geom_hline(yintercept = avg_delta_d)+
     geom_hline(yintercept = 0, linetype=2)+
-  labs(x="Average IRF",
+  labs(x="Fitted Value",
        y="DxH - XN")
 
 ggplot(df,aes(d_irf,delta_p_d))+
   geom_point()+
   geom_hline(yintercept = avg_delta_p_d)+
     geom_hline(yintercept = 0, linetype=2)+
-  labs(x="Average IRF",
+  labs(x="Fitted Value",
        y="Percent difference")
   
 ```
+
+```{r}
+qqnorm(df$delta_d)
+```
+
