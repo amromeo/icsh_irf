@@ -134,7 +134,7 @@ A Deming regression model was fitted using the log transformed XN IRF data and t
 
 ```{r, results='markup', include=FALSE}
 
-pbreg<-mcreg(log10(df$irf_percent_chop),(df$IRF_hup), method.reg = "WDeming",na.rm = TRUE)
+pbreg<-mcreg(log10(df$irf_percent_chop),(df$IRF_hup), method.reg = "PaBa",na.rm = TRUE)
 
 b0<-pbreg@glob.coef[1] %>% round(3)
 b1<-pbreg@glob.coef[2] %>% round(3)
@@ -167,7 +167,7 @@ df<-df %>%
   rowwise() %>% 
   mutate(avg_d = sum(IRF_hup,d_irf)/2,
          delta_d = IRF_hup - d_irf,
-         delta_p_d = delta_d/avg_d)
+         delta_p_d = delta_d/IRF_hup)
 
 avg_delta_d<-mean(df$delta_d,na.rm = T)
 avg_delta_p_d<-mean(df$delta_p_d,na.rm = T)
@@ -179,18 +179,18 @@ ggplot(df,aes(d_irf,IRF_hup))+
 ```
 
 ```{r}
-ggplot(df,aes(avg_d,delta_d))+
+ggplot(df,aes(d_irf,delta_d))+
   geom_point()+
   geom_hline(yintercept = avg_delta_d)+
     geom_hline(yintercept = 0, linetype=2)+
-  labs(x="Avergage IRF",
+  labs(x="Average IRF",
        y="DxH - XN")
 
-ggplot(df,aes(avg_d,delta_p_d))+
+ggplot(df,aes(d_irf,delta_p_d))+
   geom_point()+
   geom_hline(yintercept = avg_delta_p_d)+
     geom_hline(yintercept = 0, linetype=2)+
-  labs(x="Avergage IRF",
+  labs(x="Average IRF",
        y="Percent difference")
   
 ```
