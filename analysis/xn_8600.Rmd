@@ -70,7 +70,7 @@ ggplot(gg,aes(value))+
 Data was visualized with dot plots overlayed with loess smooth curve (blue) and a linear model. Since the linear model approximated the data well, a Deming regression was pursued on untransformed data.
 
 
-```{r, eval=FALSE}
+```{r}
 
 ggplot(mydf,aes(irf_xn,irf_mind))+
   geom_point()+
@@ -84,7 +84,7 @@ cor(mydf$irf_xn,mydf$irf_mind)
 
 
 Bias Plots
-```{r, eval=FALSE}
+```{r}
 
 biaser<-function(x,y){
 
@@ -129,7 +129,7 @@ plot_grid(xx[[1]],xx[[2]])
 
 A Deming regression model was fitted using the log transformed XN IRF data and the raw DxH data. 
 
-```{r, results='markup', include=FALSE, eval=FALSE}
+```{r, results='markup', include=FALSE}
 
 mydems<- function(x,y) {
 
@@ -158,7 +158,7 @@ plot(dems[[1]],  x.lab = "Sysmex XN", y.lab = "Mindray")
 
 Using the model to generate an "adjusted" IRF for the XN, below would be the correlation plot and the bias plots.
 
-```{r, eval=FALSE}
+```{r}
 df<-mydf %>% 
   mutate(d_irf =  irf_xn * dems[[3]] + dems[[2]]) %>% 
   rowwise() %>% 
@@ -175,7 +175,7 @@ ggplot(df,aes(d_irf,irf_mind))+
   labs(x="Adjusted IRF Sysmex XN",y="IRF BC DxH")
 ```
 
-```{r, eval=FALSE}
+```{r}
 ggplot(df,aes(avg_d,delta_d))+
   geom_point()+
   geom_hline(yintercept = avg_delta_d)+
@@ -193,6 +193,6 @@ ggplot(df,aes(avg_d,delta_p_d))+
 ```
 
 ```{r}
-qqnorm(df$delta_d)
+#qqnorm(df$delta_d)
 ```
 
