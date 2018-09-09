@@ -14,3 +14,5 @@ Click on this [link](load_data.html) to see the script for loading data.
 Click over [here](irf_cor.html) to see the XN/DxH IRF correlation.
 
 Click over [here](xn_8600.html) to see the XN/Mindray 8600 IRF correlation.
+
+Click over [here](xn_sapphire.html) to see the XN/Sapphire IRF correlation.
