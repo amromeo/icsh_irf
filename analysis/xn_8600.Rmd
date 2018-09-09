@@ -93,7 +93,7 @@ plot_grid(xx[[1]],xx[[2]])
 
 A Deming regression model was fitted using the log transformed XN IRF data and the raw DxH data. 
 
-```{r, results='markup', include=FALSE}
+```{r, results='markup'}
 
 dems<-mydems(mydf$irf_xn,mydf$irf_mind)
 
