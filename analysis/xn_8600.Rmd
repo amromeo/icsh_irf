@@ -69,11 +69,9 @@ Data was visualized with dot plots overlayed with loess smooth curve (blue) and 
 
 ```{r}
 
-ggplot(mydf,aes(irf_xn,irf_mind))+
-  geom_point()+
-  geom_smooth()+
-  geom_smooth(method = "lm",se=FALSE,color="green")+
+firstgg(mydf$irf_xn,mydf$irf_mind)+
   labs(x="IRF Sysmex XN",y="IRF Mindray")
+
 
 
 ```

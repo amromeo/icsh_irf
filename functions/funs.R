@@ -65,6 +65,22 @@ library(cowplot,lib.loc=libloc)
 library(fcuk,lib.loc=libloc)
 }
 
+
+firstgg<-function(x,y){
+  df<-data_frame(x=x,y=y)
+
+  mylims<-max(c(x,y))
+
+  ggplot(mydf,aes(x,y))+
+    geom_point()+
+    geom_smooth()+
+    geom_smooth(method = "lm",se=FALSE,color="green")+
+    geom_abline(intercept = 1,slope = 1,linetype=2)+
+    xlim(0,mylims)+
+    ylim(0,mylims)
+}
+
+
 mydems<- function(x,y) {
 
   pbreg<-mcreg(x,y, method.reg = "PaBa",na.rm = TRUE)
