@@ -1,0 +1,135 @@
+---
+title: "Load Data and Review"
+author: "Amrom"
+date: "2018-08-30"
+output: workflowr::wflow_html
+---
+
+## Analyzers
+
+- Horiba PXLR
+- Horiba PDX Nexus
+- Horiba YH2500
+- Sysmex XE 2100
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+#library(here,lib.loc = "~/icsh_rf/library")
+#source(here::here("functions","funs.R"))
+source("~/icsh_irf/functions/funs.R")
+load_libs()
+```
+
+Script to load abbott data and transform for futher analysis
+
+```{r warning=FALSE, message=FALSE}
+
+mydata<-read_xlsx(here("data","Copy of H1815a_Data Collection Instrument - HORIBA.xlsx"),sheet = 2,range = "A2:Y363")
+
+thecols<-mydata %>% colnames
+restof<- mydata[1,] %>% unlist %>% as.character()
+
+colnames(xdf)<- paste(thecols,restof) 
+
+colnames(mydata)<-paste(thecols,restof) 
+mydata <- mydata %>%
+  clean_names()  
+colnames(mydata) <- colnames(mydata) %>% 
+  str_replace_all(pattern = "X__[0-9]","") %>% 
+  str_replace_all(pattern = "u_l_","") %>% 
+  str_replace_all(pattern = "^x_[0-9]_","") %>% 
+  str_replace_all(pattern = "_[0-9]_","_") %>% 
+  str_replace_all(pattern = "_pg_","_")
+
+
+picks<-which(!(colnames(mydata)=="na"))
+mydata <- mydata[,picks]
+
+mydata %>% 
+  filter(!str_detect(date,"date"))
+
+##Finished here
+
+  tidyr::fill(x_sapphire,.direction="down") %>% 
+
+  mutate_at(2:9,as.numeric) 
+
+
+
+selector<-function(df_name){
+require(snakecase,lib.loc = libloc)
+    read_csv(df_name, skip = 1) %>% 
+    tbl_df() %>% 
+    select(starts_with("Sample N"),
+           Date,
+           starts_with("RET"),
+           starts_with("IRF")
+           ) %>% 
+    clean_names() %>% 
+      select(-contains("_m"))  %>% 
+      mutate_at(3:6,as.numeric) %>% 
+      mutate_at(1,as.character)
+  }
+
+chop<-mydf %>% 
+  mutate(files = map(dirs,dir,"\\.csv$")) %>% 
+  unnest(files) %>% 
+  mutate(glued = paste0(dirs,"/",files)) %>% 
+  filter(!str_detect(glued,"_2")) %>% 
+  filter(!str_detect(glued,"_3")) %>% 
+  filter(!str_detect(glued,"RESEARCH")) %>% 
+  mutate(dfs = map(glued,selector)) %>% 
+  unnest(dfs) %>% 
+  select(-c(1:3)) %>% 
+  select(-ret_he_pg)
+
+save(chop,file = here("prepped_data","chop.Rdata"))
+
+```
+
+
+```{r}
+
+chop %>%
+  gather("param","value",-c(1:2)) %>% 
+  ggplot()+
+  geom_histogram(aes(value))+
+  facet_wrap(~param, scales = "free",ncol = 1)
+    
+
+```
+
+## HUP data
+
+```{r warning=FALSE, message=FALSE}
+mydf <- tibble(dirs = mydirs)
+
+selector_xl<-function(df_name){
+    read_xlsx(df_name,na="NA") %>% 
+    tbl_df() %>% 
+     select(c(1:2,13:15))
+  }
+
+hup<-mydf %>% 
+  mutate(files = map(dirs,dir,"\\.xlsx$")) %>% 
+  unnest(files) %>% 
+  mutate(glued = paste0(dirs,"/",files)) %>% 
+  mutate(dfs = map(glued,selector_xl)) %>% 
+  unnest(dfs) %>% 
+  select(4:8)
+ 
+
+save(hup,file = here("prepped_data","hup.Rdata"))
+```
+
+
+
+
+```{r}
+hup %>%
+  gather("param","value",-c(1:2)) %>% 
+  ggplot()+
+  geom_histogram(aes(value))+
+  facet_wrap(~param, scales = "free",ncol = 1)
+    
+
+```
