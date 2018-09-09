@@ -1,0 +1,146 @@
+---
+title: "Abbot Sapphire/Sysmex XN IRF Correlation"
+author: "Amrom"
+date: "2018-09-09"
+output: workflowr::wflow_html
+---
+
+## Analyzers
+
+- Sysmex XN
+- Abbott Sapphire
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+#library(here,lib.loc = "~/icsh_rf/library")
+#source(here::here("functions","funs.R"))
+source("~/icsh_irf/functions/funs.R")
+load_libs()
+```
+
+## Data
+
+```{r}
+mydata<-read_xlsx(here("data","IRF Data Collection Instrument-DAUH.xlsx"),sheet = 2,range = "A2:I408")
+```
+
+
+
+```{r}
+colnames(mydata)<-mydata %>%
+  clean_names() %>% 
+  colnames() %>% 
+  paste0("_XX") %>% 
+  str_replace_all(pattern = "1_XX","sapphire") %>% 
+  str_replace_all(pattern = "XX","xn")
+
+mydata <- mydata %>% 
+  tidyr::fill(x_sapphire,.direction="down") %>% 
+  filter(!str_detect(irf_xn,"nalyz")) %>% 
+  mutate_at(2:9,as.numeric) 
+
+```
+
+
+```{r}
+mydf <- mydata %>% 
+  group_by(x_sapphire) %>% 
+  summarise_all(mean)
+
+number_rows<-nrow(mydf)
+```
+
+There are `r number_rows` comparisons in the data set, each performed in triplicate.
+
+The following figure depicts the distribution of each of the parameters measured.
+
+```{r}
+gg<- mydf %>% 
+  gather(key = "param",value = "value",-x_sapphire)
+ggplot(gg,aes(value))+
+  geom_histogram()+
+  facet_wrap(~param,scales = "free",nrow = 2,dir = "v")
+```
+
+## Plots
+
+Data was visualized with dot plots overlayed with loess smooth curve (blue) and a linear model (green). Since the linear model approximated the data well, a Deming regression was pursued on untransformed data.
+
+
+```{r}
+ggplot(mydf,aes(irf_xn,irf_sapphire))+geom_point()
+firstgg(mydf$irf_xn,mydf$irf_sapphire)+
+    labs(x="IRF Sysmex XN",y="IRF Sapphire")
+```
+
+
+## Bias Plots
+```{r}
+
+xx<-biaser(mydf$irf_xn,mydf$irf_sapphire)
+xx[[1]]<-xx[[1]]+labs(y="XN - Sapphire")
+
+plot_grid(xx[[1]],xx[[2]])
+
+```
+
+
+
+## Deming regression
+
+A Deming regression model was fitted using the log transformed XN IRF data and the raw DxH data. 
+
+```{r, results='markup', include=FALSE}
+
+dems<-mydems(mydf$irf_xn,mydf$irf_sapphire)
+
+plot(dems[[1]],  x.lab = "Sysmex XN", y.lab = "Sapphire")
+
+```
+
+
+Using the model to generate an "adjusted" IRF for the XN, below would be the correlation plot and the bias plots.
+
+```{r}
+df<-mydf %>% 
+  mutate(d_irf =  irf_xn * dems[[3]] + dems[[2]]) %>% 
+  rowwise() %>% 
+  mutate(avg_d = sum(irf_sapphire,d_irf)/2,
+         delta_d = irf_sapphire - d_irf,
+         delta_p_d = delta_d/d_irf)
+
+avg_delta_d<-mean(df$delta_d,na.rm = T)
+avg_delta_p_d<-mean(df$delta_p_d,na.rm = T)
+
+ggplot(df,aes(d_irf,irf_sapphire))+
+  geom_point()+
+  labs(x="Adjusted IRF Sysmex XN",y="IRF Sapphire")
+```
+
+```{r}
+
+
+p1<-ggplot(df,aes(avg_d,delta_d))+
+  geom_point()+
+  geom_hline(yintercept = avg_delta_d)+
+    geom_hline(yintercept = 0, linetype=2)+
+  labs(x="Fitted Value",
+       y="Sapphire - XN")
+
+p2<-ggplot(df,aes(avg_d,delta_p_d))+
+  geom_point()+
+  geom_hline(yintercept = avg_delta_p_d)+
+    geom_hline(yintercept = 0, linetype=2)+
+  labs(x="Fitted Value",
+       y="Percent difference")
+
+
+plot_grid(p1,p2)
+
+  
+```
+
+```{r}
+qqnorm(df$delta_d)
+```
+
