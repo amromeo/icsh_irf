@@ -5,28 +5,26 @@ date: "2018-09-06"
 output: workflowr::wflow_html
 ---
 
-## Introduction
+## Analyzers
 
-
-At xx assessed approximately xxx specimens. 
-
-Analyzers
-- 
-- 
-
+- Sysmex XN
+- Mindray 8600
 
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
+#library(here,lib.loc = "~/icsh_rf/library")
+#source(here::here("functions","funs.R"))
 source("~/icsh_irf/functions/funs.R")
 load_libs()
 ```
 
+## Data
 
 ```{r}
 mydata<-read_xlsx(here("data","spain.xlsx"),sheet = 2,range = "A2:I372")
 ```
 
-## Data
+
 
 ```{r}
 colnames(mydata)<-mydata %>%
@@ -35,12 +33,6 @@ colnames(mydata)<-mydata %>%
   paste0("_XX") %>% 
   str_replace_all(pattern = "1_XX","mind") %>% 
   str_replace_all(pattern = "XX","xn")
-
-
-```
-
-
-```{r}
 
 mydata <- mydata %>% 
   tidyr::fill(x_mind,.direction="down") %>% 
@@ -54,20 +46,25 @@ mydata <- mydata %>%
 mydf <- mydata %>% 
   group_by(x_mind) %>% 
   summarise_all(mean)
+
+number_rows<-nrow(mydf)
 ```
 
+There are `r number_rows` comparisons in the data set, each performed in triplicate.
+
+The following figure depicts the distribution of each of the parameters measured.
 
 ```{r}
 gg<- mydf %>% 
   gather(key = "param",value = "value",-x_mind)
 ggplot(gg,aes(value))+
   geom_histogram()+
-  facet_wrap(~param,scales = "free")
+  facet_wrap(~param,scales = "free",nrow = 2,dir = "v")
 ```
 
 ## Plots
 
-Data was visualized with dot plots overlayed with loess smooth curve (blue) and a linear model. Since the linear model approximated the data well, a Deming regression was pursued on untransformed data.
+Data was visualized with dot plots overlayed with loess smooth curve (blue) and a linear model (green). Since the linear model approximated the data well, a Deming regression was pursued on untransformed data.
 
 
 ```{r}
@@ -78,43 +75,12 @@ ggplot(mydf,aes(irf_xn,irf_mind))+
   geom_smooth(method = "lm",se=FALSE,color="green")+
   labs(x="IRF Sysmex XN",y="IRF Mindray")
 
-cor(mydf$irf_xn,mydf$irf_mind)
 
 ```
 
 
-Bias Plots
+## Bias Plots
 ```{r}
-
-biaser<-function(x,y){
-
-df<-data_frame(x,y)  
-colnames(df)<-c("x","y")
-df<-df %>% 
-  rowwise() %>% 
-  mutate(avg = sum(x,y)/2,
-         delta = x - y,
-         delta_p = delta/avg)
-
-avg_delta<-mean(df$delta,na.rm = T)
-avg_delta_p<-mean(df$delta_p,na.rm = T)
-
-p1<-ggplot(df,aes(avg,delta))+
-  geom_point()+
-  geom_hline(yintercept = avg_delta)+
-    geom_hline(yintercept = 0, linetype=2)+
-  labs(x="Average IRF",
-       y="DxH - XN")
-
-p2<-ggplot(df,aes(avg,delta_p))+
-  geom_point()+
-  geom_hline(yintercept = avg_delta_p)+
-    geom_hline(yintercept = 0, linetype=2)+
-  labs(x="Average IRF",
-       y="Percent difference")
-list(p1,p2)
-
-}  
 
 xx<-biaser(mydf$irf_xn,mydf$irf_mind)
 xx[[1]]<-xx[[1]]+labs(y="XN - Mindray")
@@ -131,24 +97,6 @@ A Deming regression model was fitted using the log transformed XN IRF data and t
 
 ```{r, results='markup', include=FALSE}
 
-mydems<- function(x,y) {
-
-pbreg<-mcreg(x,y, method.reg = "PaBa",na.rm = TRUE)
-
-b0<-pbreg@glob.coef[1] %>% round(3)
-b1<-pbreg@glob.coef[2] %>% round(3)
-estim<- pbreg@para
-
-LCI.I<-estim[1,3] %>% round(3)
-UCI.I<-estim[1,4] %>% round(3)
-LCI.S<-estim[2,3] %>% round(3)
-UCI.S<-estim[2,4] %>% round(3)
-
-pcro<-cor(x,y,use = "complete.obs",method = "pearson") %>% round(3)
-
-list(pbreg,b0,b1,LCI.I,UCI.I,LCI.S,UCI.S,pcro)
-}
-
 dems<-mydems(mydf$irf_xn,mydf$irf_mind)
 
 plot(dems[[1]],  x.lab = "Sysmex XN", y.lab = "Mindray")
@@ -164,35 +112,40 @@ df<-mydf %>%
   rowwise() %>% 
   mutate(avg_d = sum(irf_mind,d_irf)/2,
          delta_d = irf_mind - d_irf,
-         delta_p_d = delta_d/irf_mind)
+         delta_p_d = delta_d/d_irf)
 
 avg_delta_d<-mean(df$delta_d,na.rm = T)
 avg_delta_p_d<-mean(df$delta_p_d,na.rm = T)
 
 ggplot(df,aes(d_irf,irf_mind))+
   geom_point()+
-  geom_smooth()+
-  labs(x="Adjusted IRF Sysmex XN",y="IRF BC DxH")
+  labs(x="Adjusted IRF Sysmex XN",y="IRF Mindray")
 ```
 
 ```{r}
-ggplot(df,aes(avg_d,delta_d))+
+
+
+p1<-ggplot(df,aes(avg_d,delta_d))+
   geom_point()+
   geom_hline(yintercept = avg_delta_d)+
     geom_hline(yintercept = 0, linetype=2)+
   labs(x="Fitted Value",
        y="Mindray - XN")
 
-ggplot(df,aes(avg_d,delta_p_d))+
+p2<-ggplot(df,aes(avg_d,delta_p_d))+
   geom_point()+
   geom_hline(yintercept = avg_delta_p_d)+
     geom_hline(yintercept = 0, linetype=2)+
   labs(x="Fitted Value",
        y="Percent difference")
+
+
+plot_grid(p1,p2)
+
   
 ```
 
 ```{r}
-#qqnorm(df$delta_d)
+qqnorm(df$delta_d)
 ```
 

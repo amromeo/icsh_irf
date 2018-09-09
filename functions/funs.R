@@ -62,4 +62,53 @@ library(janitor,lib.loc=libloc)
 library(mcr,lib.loc=libloc)
 library(readxl,lib.loc=libloc)
 library(cowplot,lib.loc=libloc)
+library(fcuk,lib.loc=libloc)
+}
+
+mydems<- function(x,y) {
+
+  pbreg<-mcreg(x,y, method.reg = "PaBa",na.rm = TRUE)
+
+  b0<-pbreg@glob.coef[1] %>% round(3)
+  b1<-pbreg@glob.coef[2] %>% round(3)
+  estim<- pbreg@para
+
+  LCI.I<-estim[1,3] %>% round(3)
+  UCI.I<-estim[1,4] %>% round(3)
+  LCI.S<-estim[2,3] %>% round(3)
+  UCI.S<-estim[2,4] %>% round(3)
+
+  pcro<-cor(x,y,use = "complete.obs",method = "pearson") %>% round(3)
+
+  list(pbreg,b0,b1,LCI.I,UCI.I,LCI.S,UCI.S,pcro)
+}
+
+biaser<-function(x,y){
+
+  df<-data_frame(x,y)
+  colnames(df)<-c("x","y")
+  df<-df %>%
+    rowwise() %>%
+    mutate(avg = sum(x,y)/2,
+           delta = x - y,
+           delta_p = delta/avg)
+
+  avg_delta<-mean(df$delta,na.rm = T)
+  avg_delta_p<-mean(df$delta_p,na.rm = T)
+
+  p1<-ggplot(df,aes(avg,delta))+
+    geom_point()+
+    geom_hline(yintercept = avg_delta)+
+    geom_hline(yintercept = 0, linetype=2)+
+    labs(x="Average IRF",
+         y="DxH - XN")
+
+  p2<-ggplot(df,aes(avg,delta_p))+
+    geom_point()+
+    geom_hline(yintercept = avg_delta_p)+
+    geom_hline(yintercept = 0, linetype=2)+
+    labs(x="Average IRF",
+         y="Percent difference")
+  list(p1,p2)
+
 }
