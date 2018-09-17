@@ -59,13 +59,6 @@ mydata <- mydata %>%
 ##Finished here
 
 ```{r}
-
-save(mydata,file = here("prepped_data","horiba.Rdata"))
-
-```
-
-
-```{r}
 #There is an entry error in the ADVIA IRF, replacing with NA
 mydata[mydata$irf_percent_advia2120>1,"irf_percent_advia2120"]<-NA
 
@@ -81,4 +74,11 @@ mydata %>%
     
 
 ```
+
+```{r}
+
+save(mydata,file = here("prepped_data","horiba.Rdata"))
+
+```
+
 
