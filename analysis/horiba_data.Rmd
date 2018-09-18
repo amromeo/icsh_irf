@@ -1,0 +1,180 @@
+---
+title: "Correlations from Horiba"
+author: "Amrom"
+date: "2018-09-17"
+output: workflowr::wflow_html
+---
+
+## Analyzers
+
+- Horiba PXLR
+- Horiba PDX Nexus
+- Horiba YH2500
+- Advia 2120
+- Sysmex XE
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+#library(here,lib.loc = "~/icsh_rf/library")
+#source(here::here("functions","funs.R"))
+source("~/icsh_irf/functions/funs.R")
+load_libs()
+```
+
+## Data
+
+```{r}
+load(here("prepped_data","horiba.Rdata"))
+```
+
+```{r}
+mydf<-mydata
+number_rows<-nrow(mydf)
+```
+
+There are `r number_rows` comparisons in the data set. The Horiba instruments were measured in triplicate and the Advia and Sysmex were measured a single time.
+
+The following figure depicts the distribution of each of the parameters measured.
+
+```{r}
+gg<- mydf %>% 
+  gather(key = "param",value = "value",-sample)
+ggplot(gg,aes(value))+
+  geom_histogram()+
+  facet_wrap(~param,scales = "free",nrow = 5,dir = "v")
+```
+
+## Plots
+
+Data was visualized with dot plots overlayed with loess smooth curve (blue) and a linear model (green). Since the linear model approximated the data well, a Deming regression was pursued on untransformed data.
+
+
+```{r, warning=FALSE}
+
+ggpairs(mydf[,2:6],progress = FALSE,diag = NULL,lower = list(
+    continuous = "smooth"))
+
+```
+
+
+## Bias Plots
+```{r}
+
+ggate<-function(x,param1,param2,type){
+  theave<-mean(x$delta,na.rm = T)
+  theave_p<-mean(x$p_delta,na.rm = T)
+  
+  myparam1<-case_when(
+    param1 == "irf_percent_pxlr" ~ "PXLR",
+    param1 == "irf_percent_pdx_nexus" ~ "PDX Nexus",
+    param1 == "irf_percent_yh2500" ~ "YH2500",
+    param1 == "irf_percent_xe2100" ~ "XE 2100",
+    param1 == "irf_percent_advia2120" ~ "ADVIA 2120"
+  )
+  
+  myparam2<-case_when(
+    param2 == "irf_percent_pxlr" ~ "PXLR",
+    param2 == "irf_percent_pdx_nexus" ~ "PDX Nexus",
+    param2 == "irf_percent_yh2500" ~ "YH2500",
+    param2 == "irf_percent_xe2100" ~ "XE 2100",
+    param2 == "irf_percent_advia2120" ~ "ADVIA 2120"
+  )
+if(type=="normal"){  
+  p<-ggplot(x,aes(ave,delta))+geom_hline(yintercept = theave,linetype=2)+ylab("Delta")
+
+} else {
+  p<-ggplot(x,aes(ave,p_delta))+geom_hline(yintercept = theave_p,linetype=2)+ylab("Percent Delta")
+}
+  p+geom_point()+
+    geom_hline(yintercept = 0)+
+    xlab("Average")+
+    ggtitle(paste("Bias Plot",myparam1,myparam2))
+  }
+
+mydf2<-mydf %>% 
+  select(1,contains("irf")) %>% 
+  gather("param","value",-sample) %>% 
+  left_join(.,.,by="sample") %>% 
+  filter(param.x != param.y) %>% 
+  mutate(delta = value.x - value.y) %>% 
+  rowwise() %>% 
+  mutate(ave = (value.x + value.y)/2) %>% 
+  mutate(p_delta = delta/ave) %>% 
+  group_by(param.x,param.y) %>% 
+  nest()
+myplots<-mydf2 %>% mutate(plots = pmap(list(data,param.x,param.y,"normal"),ggate))
+my_per_plots <- mydf2 %>% mutate(plots = pmap(list(data,param.x,param.y,"percent"),ggate))
+plot_grid(myplots$plots[[1]],myplots$plots[[2]],myplots$plots[[3]],myplots$plots[[4]])
+plot_grid(myplots$plots[[5]],myplots$plots[[6]],myplots$plots[[7]],myplots$plots[[8]])
+plot_grid(myplots$plots[[9]],myplots$plots[[10]],myplots$plots[[11]],myplots$plots[[12]])
+plot_grid(myplots$plots[[13]],myplots$plots[[14]],myplots$plots[[15]],myplots$plots[[16]])
+plot_grid(myplots$plots[[17]],myplots$plots[[18]],myplots$plots[[19]],myplots$plots[[20]])
+
+
+plot_grid(my_per_plots$plots[[1]],my_per_plots$plots[[2]],my_per_plots$plots[[3]],my_per_plots$plots[[4]])
+plot_grid(my_per_plots$plots[[5]],my_per_plots$plots[[6]],my_per_plots$plots[[7]],my_per_plots$plots[[8]])
+plot_grid(my_per_plots$plots[[9]],my_per_plots$plots[[10]],my_per_plots$plots[[11]],my_per_plots$plots[[12]])
+plot_grid(my_per_plots$plots[[13]],my_per_plots$plots[[14]],my_per_plots$plots[[15]],my_per_plots$plots[[16]])
+plot_grid(my_per_plots$plots[[17]],my_per_plots$plots[[18]],my_per_plots$plots[[19]],my_per_plots$plots[[20]])
+
+
+```
+
+## Deming regression
+
+A Deming regression model was fitted to all pairwise comparisons. 
+
+```{r, results='markup'}
+
+dems<-mydems(mydf$irf_xn,mydf$irf_mind)
+
+plot(dems[[1]],  x.lab = "Sysmex XN", y.lab = "Mindray")
+
+```
+
+
+Using the model to generate an "adjusted" IRF for the XN, below would be the correlation plot and the bias plots.
+
+```{r}
+df<-mydf %>% 
+  mutate(d_irf =  irf_xn * dems[[3]] + dems[[2]]) %>% 
+  rowwise() %>% 
+  mutate(avg_d = sum(irf_mind,d_irf)/2,
+         delta_d = irf_mind - d_irf,
+         delta_p_d = delta_d/d_irf)
+
+avg_delta_d<-mean(df$delta_d,na.rm = T)
+avg_delta_p_d<-mean(df$delta_p_d,na.rm = T)
+
+ggplot(df,aes(d_irf,irf_mind))+
+  geom_point()+
+  labs(x="Adjusted IRF Sysmex XN",y="IRF Mindray")
+```
+
+```{r}
+
+
+p1<-ggplot(df,aes(avg_d,delta_d))+
+  geom_point()+
+  geom_hline(yintercept = avg_delta_d)+
+    geom_hline(yintercept = 0, linetype=2)+
+  labs(x="Fitted Value",
+       y="Mindray - XN")
+
+p2<-ggplot(df,aes(avg_d,delta_p_d))+
+  geom_point()+
+  geom_hline(yintercept = avg_delta_p_d)+
+    geom_hline(yintercept = 0, linetype=2)+
+  labs(x="Fitted Value",
+       y="Percent difference")
+
+
+plot_grid(p1,p2)
+
+  
+```
+
+```{r}
+qqnorm(df$delta_d)
+```
+
