@@ -203,10 +203,8 @@ plot(demsdf$dems[[i]]$model,
 }
 recorded<-recordPlot()
 plots<-plot_grid(recorded)
-ggsave(paste0("plots/dems",p,".png"),plots)
+ggsave(paste0("/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems",p,".png"),plots)
 }
-
-
 
 ```
 
