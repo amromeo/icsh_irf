@@ -47,12 +47,12 @@ ggplot(gg,aes(value))+
 
 ## Plots
 
-Data was visualized with dot plots overlayed with loess smooth curve (blue) and a linear model (green). Since the linear model approximated the data well, a Deming regression was pursued on untransformed data.
+Data was visualized with dot plots overlayed with a linear model.
 
 
 ```{r, warning=FALSE}
 
-ggpairs(mydf[,2:6],progress = FALSE,diag = NULL,lower = list(
+ggpairs(mydf[,2:6]*100,progress = FALSE,diag = NULL,lower = list(
     continuous = "smooth"))
 
 ```
@@ -95,6 +95,7 @@ if(type=="normal"){
 mydf2<-mydf %>% 
   select(1,contains("irf")) %>% 
   gather("param","value",-sample) %>% 
+  mutate(value=100*value) %>% 
   left_join(.,.,by="sample") %>% 
   filter(param.x != param.y) %>% 
   mutate(delta = value.x - value.y) %>% 

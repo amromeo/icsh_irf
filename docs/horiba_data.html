@@ -332,8 +332,7 @@ div.section {
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>R Markdown file:</strong> up-to-date </summary></p>
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </details>
 </li>
 <li>
@@ -352,7 +351,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/amromeo/icsh_irf/tree/9fb9ed7b81ef8df69488f62c8c08538f73f1bf33" target="_blank">9fb9ed7</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/amromeo/icsh_irf/tree/1de34f46f89e394291272f6d03c89b24d7a5ccda" target="_blank">1de34f4</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -375,6 +374,9 @@ Ignored files:
 Untracked files:
     Untracked:  functions/base_plots.R
     Untracked:  output/demsdf.Rdata
+
+Unstaged changes:
+    Modified:   analysis/horiba_data.Rmd
 
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
@@ -403,6 +405,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/amromeo/icsh_irf/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/horiba_data.html" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+<td style="text-align:left;">
+new horiba html
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -457,33 +476,243 @@ horiba nalaysis through bias plots
 <p>There are 120 comparisons in the data set. The Horiba instruments were measured in triplicate and the Advia and Sysmex were measured a single time.</p>
 <p>The following figure depicts the distribution of each of the parameters measured.</p>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-4-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-4-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-4-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="plots" class="section level2">
 <h2>Plots</h2>
-<p>Data was visualized with dot plots overlayed with loess smooth curve (blue) and a linear model (green). Since the linear model approximated the data well, a Deming regression was pursued on untransformed data.</p>
+<p>Data was visualized with dot plots overlayed with a linear model.</p>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-5-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-5-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-5-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="bias-plots" class="section level2">
 <h2>Bias Plots</h2>
 <div id="pxlr" class="section level3">
 <h3>PXLR</h3>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-7-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-7-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-7-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="pdx-nexus" class="section level3">
 <h3>PDX Nexus</h3>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-8-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-8-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-8-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="yh2500" class="section level3">
 <h3>YH2500</h3>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-9-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-9-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-9-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="advia-2120" class="section level3">
 <h3>ADVIA 2120</h3>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-10-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-10-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-10-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="sysmex-xe" class="section level3">
 <h3>Sysmex XE</h3>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-11-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-11-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-11-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 </div>
 <div id="percent-bias-plots" class="section level2">
@@ -491,22 +720,172 @@ horiba nalaysis through bias plots
 <div id="pxlr-1" class="section level3">
 <h3>PXLR</h3>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-12-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-12-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-12-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="pdx-nexus-1" class="section level3">
 <h3>PDX Nexus</h3>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-13-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-13-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-13-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="yh2500-1" class="section level3">
 <h3>YH2500</h3>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-14-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-14-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-14-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="advia2120" class="section level3">
 <h3>ADVIA2120</h3>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-15-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-15-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-15-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="sysmex-xe-1" class="section level3">
 <h3>Sysmex XE</h3>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-16-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-16-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-16-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 </div>
 <div id="deming-regression" class="section level2">
@@ -542,6 +921,36 @@ horiba nalaysis through bias plots
 <h2>Adjusted IRFs</h2>
 <p>Using these models we generated an “adjusted” IRF.</p>
 <p><img src="figure/horiba_data.Rmd/unnamed-chunk-25-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-25-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/1de34f46f89e394291272f6d03c89b24d7a5ccda/docs/figure/horiba_data.Rmd/unnamed-chunk-25-1.png" target="_blank">1de34f4</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
