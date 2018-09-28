@@ -63,6 +63,9 @@ library(mcr,lib.loc=libloc)
 library(readxl,lib.loc=libloc)
 library(cowplot,lib.loc=libloc)
 library(fcuk,lib.loc=libloc)
+library(GGally,lib.loc=libloc)
+library(reshape2,lib.loc=libloc)
+library(gridGraphics,lib.loc=libloc)
 }
 
 
@@ -96,7 +99,7 @@ mydems<- function(x,y) {
 
   pcro<-cor(x,y,use = "complete.obs",method = "pearson") %>% round(3)
 
-  list(pbreg,b0,b1,LCI.I,UCI.I,LCI.S,UCI.S,pcro)
+  list(model=pbreg,b0=b0,b1=b1,LCI.I=LCI.I,UCI.I=UCI.I,LCI.S=LCI.S,UCI.S=UCI.S,pcro=pcro)
 }
 
 biaser<-function(x,y){

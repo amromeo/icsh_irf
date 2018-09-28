@@ -3,6 +3,7 @@ title: "Correlations from Horiba"
 author: "Amrom"
 date: "2018-09-17"
 output: workflowr::wflow_html
+self_contained: no
 ---
 
 ## Analyzers
@@ -104,20 +105,60 @@ mydf2<-mydf %>%
   nest()
 myplots<-mydf2 %>% mutate(plots = pmap(list(data,param.x,param.y,"normal"),ggate))
 my_per_plots <- mydf2 %>% mutate(plots = pmap(list(data,param.x,param.y,"percent"),ggate))
+```
+
+### PXLR
+```{r}
 plot_grid(myplots$plots[[1]],myplots$plots[[2]],myplots$plots[[3]],myplots$plots[[4]])
+```
+
+### PDX Nexus
+```{r}
 plot_grid(myplots$plots[[5]],myplots$plots[[6]],myplots$plots[[7]],myplots$plots[[8]])
+```
+
+### YH2500
+```{r}
 plot_grid(myplots$plots[[9]],myplots$plots[[10]],myplots$plots[[11]],myplots$plots[[12]])
+```
+
+### ADVIA 2120
+```{r}
 plot_grid(myplots$plots[[13]],myplots$plots[[14]],myplots$plots[[15]],myplots$plots[[16]])
+
+```
+
+### Sysmex XE
+```{r}
 plot_grid(myplots$plots[[17]],myplots$plots[[18]],myplots$plots[[19]],myplots$plots[[20]])
+```
 
 
+## Percent Bias Plots
+
+### PXLR
+```{r}
 plot_grid(my_per_plots$plots[[1]],my_per_plots$plots[[2]],my_per_plots$plots[[3]],my_per_plots$plots[[4]])
+```
+
+### PDX Nexus
+```{r}
 plot_grid(my_per_plots$plots[[5]],my_per_plots$plots[[6]],my_per_plots$plots[[7]],my_per_plots$plots[[8]])
+```
+
+### YH2500
+```{r}
 plot_grid(my_per_plots$plots[[9]],my_per_plots$plots[[10]],my_per_plots$plots[[11]],my_per_plots$plots[[12]])
+```
+
+### ADVIA2120
+```{r}
 plot_grid(my_per_plots$plots[[13]],my_per_plots$plots[[14]],my_per_plots$plots[[15]],my_per_plots$plots[[16]])
+```
+
+### Sysmex XE
+```{r}
 plot_grid(my_per_plots$plots[[17]],my_per_plots$plots[[18]],my_per_plots$plots[[19]],my_per_plots$plots[[20]])
-
-
 ```
 
 ## Deming regression
@@ -126,55 +167,139 @@ A Deming regression model was fitted to all pairwise comparisons.
 
 ```{r, results='markup'}
 
-dems<-mydems(mydf$irf_xn,mydf$irf_mind)
+mydemshor<-function(x){
+  mydems(x$value.x,x$value.y)
+}
+load(file = "~/icsh_irf/output/demsdf.Rdata")
+if(FALSE){
+demsdf<-mydf2 %>% 
+  mutate(dems = map(data,mydemshor))
+}
+```
 
-plot(dems[[1]],  x.lab = "Sysmex XN", y.lab = "Mindray")
+```{r, eval=FALSE}
+for(p in 1:5) {
+for (i in 1:4+(4*(p-1))) {
+    myparam1<-case_when(
+    demsdf$param.x[i] == "irf_percent_pxlr" ~ "PXLR",
+    demsdf$param.x[i] == "irf_percent_pdx_nexus" ~ "PDX Nexus",
+    demsdf$param.x[i] == "irf_percent_yh2500" ~ "YH2500",
+    demsdf$param.x[i] == "irf_percent_xe2100" ~ "XE 2100",
+    demsdf$param.x[i] == "irf_percent_advia2120" ~ "ADVIA 2120"
+  )
+
+  myparam2<-case_when(
+    demsdf$param.y[i] == "irf_percent_pxlr" ~ "PXLR",
+    demsdf$param.y[i] == "irf_percent_pdx_nexus" ~ "PDX Nexus",
+    demsdf$param.y[i] == "irf_percent_yh2500" ~ "YH2500",
+    demsdf$param.y[i] == "irf_percent_xe2100" ~ "XE 2100",
+    demsdf$param.y[i] == "irf_percent_advia2120" ~ "ADVIA 2120"
+  )
+
+plot(demsdf$dems[[i]]$model,
+     x.lab = myparam1,
+     y.lab = myparam2)
+}
+recorded<-recordPlot()
+plots<-plot_grid(recorded)
+ggsave(paste0("plots/dems",p,".png"),plots)
+}
+
+
+
+```
+
+### PXLR
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('figure/horiba_data.Rmd/dems1.png')
+```
+
+
+
+### PDX Nexus
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('figure/horiba_data.Rmd/dems2.png')
+```
+
+### YH2500
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('figure/horiba_data.Rmd/dems3.png')
+```
+
+### ADVIA 2120
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('figure/horiba_data.Rmd/dems4.png')
+```
+
+### Sysmex XE
+
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics('figure/horiba_data.Rmd/dems5.png')
+```
+
+
+### Summary of Regression models
+```{r}
+coefs<-map(demsdf$dems,rbind) %>% do.call(rbind,.)
+
+proc_data<-demsdf[,1:2] %>% 
+  bind_cols(coefs[,2:7] %>% tbl_df() %>% unnest()) 
+
+DT::datatable(proc_data %>% select(c(1,2,3,5,6,4,7,8)),colnames=c("X-value",
+                                   "Y-value",
+                                   "Intercept",
+                                   "Lower CI",
+                                   "Upper CI",
+                                   "Slope",
+                                   "Lower CI",
+                                   "Upper CI"
+                                   ))
 
 ```
 
 
-Using the model to generate an "adjusted" IRF for the XN, below would be the correlation plot and the bias plots.
+## Adjusted IRFs
+
+Using these models we generated an "adjusted" IRF.
 
 ```{r}
-df<-mydf %>% 
-  mutate(d_irf =  irf_xn * dems[[3]] + dems[[2]]) %>% 
-  rowwise() %>% 
-  mutate(avg_d = sum(irf_mind,d_irf)/2,
-         delta_d = irf_mind - d_irf,
-         delta_p_d = delta_d/d_irf)
 
-avg_delta_d<-mean(df$delta_d,na.rm = T)
-avg_delta_p_d<-mean(df$delta_p_d,na.rm = T)
-
-ggplot(df,aes(d_irf,irf_mind))+
+mydf2 %>% 
+  unnest() %>% 
+  left_join(proc_data) %>% 
+  select(c(1,2,4,5,9,10)) %>% 
+  mutate(new_y = (value.x*b1)+b0,
+         residual = value.y-new_y) %>% 
+  mutate(myparam1 = case_when(
+    param.x == "irf_percent_pxlr" ~ "PXLR",
+    param.x == "irf_percent_pdx_nexus" ~ "PDX Nexus",
+    param.x == "irf_percent_yh2500" ~ "YH2500",
+    param.x == "irf_percent_xe2100" ~ "XE 2100",
+    param.x == "irf_percent_advia2120" ~ "ADVIA 2120"
+  ),
+  myparam2=case_when(
+    param.y == "irf_percent_pxlr" ~ "PXLR",
+    param.y == "irf_percent_pdx_nexus" ~ "PDX Nexus",
+    param.y == "irf_percent_yh2500" ~ "YH2500",
+    param.y == "irf_percent_xe2100" ~ "XE 2100",
+    param.y == "irf_percent_advia2120" ~ "ADVIA 2120"
+  )
+  ) %>% 
+  ggplot(aes(new_y,residual))+
   geom_point()+
-  labs(x="Adjusted IRF Sysmex XN",y="IRF Mindray")
+  geom_hline(yintercept = 0, linetype=2)+
+  facet_grid(rows = vars(myparam1),cols = vars(myparam2))+
+  theme(axis.text.x = element_text(vjust = -1))+
+  theme(axis.text.y = element_text(hjust = -1))+
+  labs(x="Predicted Value (Fitted)",
+       y="True - Predicted (Residual)")
+
+
 ```
 
-```{r}
 
-
-p1<-ggplot(df,aes(avg_d,delta_d))+
-  geom_point()+
-  geom_hline(yintercept = avg_delta_d)+
-    geom_hline(yintercept = 0, linetype=2)+
-  labs(x="Fitted Value",
-       y="Mindray - XN")
-
-p2<-ggplot(df,aes(avg_d,delta_p_d))+
-  geom_point()+
-  geom_hline(yintercept = avg_delta_p_d)+
-    geom_hline(yintercept = 0, linetype=2)+
-  labs(x="Fitted Value",
-       y="Percent difference")
-
-
-plot_grid(p1,p2)
-
-  
-```
-
-```{r}
-qqnorm(df$delta_d)
-```
 
