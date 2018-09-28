@@ -203,15 +203,17 @@ plot(demsdf$dems[[i]]$model,
 }
 recorded<-recordPlot()
 plots<-plot_grid(recorded)
-ggsave(paste0("/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems",p,".png"),plots)
+ggsave(paste0("/home/obstfelda/icsh_irf/plots/dems",p,".png"),plots)
 }
 
 ```
 
 ### PXLR
 
+![](/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems1.png)
+
 ```{r echo=FALSE, out.width='100%'}
-knitr::include_graphics('figure/horiba_data.Rmd/dems1.png')
+knitr::include_graphics('/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems1.png')
 ```
 
 
@@ -219,25 +221,25 @@ knitr::include_graphics('figure/horiba_data.Rmd/dems1.png')
 ### PDX Nexus
 
 ```{r echo=FALSE, out.width='100%'}
-knitr::include_graphics('figure/horiba_data.Rmd/dems2.png')
+knitr::include_graphics('/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems2.png')
 ```
 
 ### YH2500
 
 ```{r echo=FALSE, out.width='100%'}
-knitr::include_graphics('figure/horiba_data.Rmd/dems3.png')
+knitr::include_graphics('/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems3.png')
 ```
 
 ### ADVIA 2120
 
 ```{r echo=FALSE, out.width='100%'}
-knitr::include_graphics('figure/horiba_data.Rmd/dems4.png')
+knitr::include_graphics('/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems4.png')
 ```
 
 ### Sysmex XE
 
 ```{r echo=FALSE, out.width='100%'}
-knitr::include_graphics('figure/horiba_data.Rmd/dems5.png')
+knitr::include_graphics('/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems5.png')
 ```
 
 

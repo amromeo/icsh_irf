@@ -332,7 +332,7 @@ div.section {
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has staged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </details>
 </li>
 <li>
@@ -351,7 +351,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/amromeo/icsh_irf/tree/2ccedcc854b8e972331ce48d5e3bc25a92c567f8" target="_blank">2ccedcc</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/amromeo/icsh_irf/tree/5a0bc5c3a7b126dc5b034c761a61db659de4d0b7" target="_blank">5a0bc5c</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -368,14 +368,14 @@ Ignored files:
     Ignored:    data/7-3-18/
     Ignored:    data/8-1-18/
     Ignored:    library/
-    Ignored:    plots/
     Ignored:    prepped_data/horiba.Rdata
 
 Untracked files:
     Untracked:  functions/base_plots.R
     Untracked:  output/demsdf.Rdata
+    Untracked:  plots/
 
-Unstaged changes:
+Staged changes:
     Modified:   analysis/horiba_data.Rmd
 
 </code></pre>
@@ -405,6 +405,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/3aa7c4f9c4f0f6f4526999f975b773ab1e397537/analysis/horiba_data.Rmd" target="_blank">3aa7c4f</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+<td style="text-align:left;">
+s
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/amromeo/icsh_irf/3aa7c4f9c4f0f6f4526999f975b773ab1e397537/docs/horiba_data.html" target="_blank">3aa7c4f</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-09-28
+</td>
+<td style="text-align:left;">
+s
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -1048,23 +1082,27 @@ Amrom
 <p>A Deming regression model was fitted to all pairwise comparisons.</p>
 <div id="pxlr-2" class="section level3">
 <h3>PXLR</h3>
-<p><img src="figure/horiba_data.Rmd/dems1.png" width="100%" style="display: block; margin: auto;" /></p>
+<div class="figure">
+<img src="/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems1.png" />
+
+</div>
+<p><img src="/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems1.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="pdx-nexus-2" class="section level3">
 <h3>PDX Nexus</h3>
-<p><img src="figure/horiba_data.Rmd/dems2.png" width="100%" style="display: block; margin: auto;" /></p>
+<p><img src="/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems2.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="yh2500-2" class="section level3">
 <h3>YH2500</h3>
-<p><img src="figure/horiba_data.Rmd/dems3.png" width="100%" style="display: block; margin: auto;" /></p>
+<p><img src="/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems3.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="advia-2120-1" class="section level3">
 <h3>ADVIA 2120</h3>
-<p><img src="figure/horiba_data.Rmd/dems4.png" width="100%" style="display: block; margin: auto;" /></p>
+<p><img src="/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems4.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="sysmex-xe-2" class="section level3">
 <h3>Sysmex XE</h3>
-<p><img src="figure/horiba_data.Rmd/dems5.png" width="100%" style="display: block; margin: auto;" /></p>
+<p><img src="/home/obstfelda/icsh_irf/docs/figure/horiba_data.Rmd/dems5.png" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="summary-of-regression-models" class="section level3">
 <h3>Summary of Regression models</h3>
