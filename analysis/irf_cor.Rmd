@@ -74,7 +74,7 @@ df %>%
 
 ## Plots
 
-Data was visualized with dot plots overlayed with loess smooth curves. Plot A below demonstrates a non-linear relationship between results from the two analyzers. Logarithmic transformation of the XN IRF results yielded a more linear relationship. As a result Deming regression was pursued using log transformed XN data.
+Data was visualized with dot plots overlayed with loess smooth curves. Plot A below demonstrates a non-linear relationship between results from the two analyzers. Logarithmic transformation of the XN IRF results yielded a more linear relationship. As a result Passing Bablok regression was pursued using log transformed XN data.
 
 
 ```{r}
@@ -128,9 +128,9 @@ ggplot(df,aes(avg,delta_p))+
 
 
 
-## Deming regression
+## Passing Bablok regression
 
-A Deming regression model was fitted using the log transformed XN IRF data and the raw DxH data. 
+A Passing Bablok regression model was fitted using the log transformed XN IRF data and the raw DxH data. 
 
 ```{r, results='markup', include=FALSE}
 
@@ -174,7 +174,7 @@ avg_delta_p_d<-mean(df$delta_p_d,na.rm = T)
 
 ggplot(df,aes(d_irf,IRF_hup))+
   geom_point()+
-  geom_smooth()+
+  geom_smooth(method = 'lm')+
   labs(x="Adjusted IRF Sysmex XN",y="IRF BC DxH")
 ```
 
