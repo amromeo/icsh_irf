@@ -332,8 +332,7 @@ div.section {
 <strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
 <ul>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>R Markdown file:</strong> up-to-date </summary></p>
-<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
 </details>
 </li>
 <li>
@@ -352,7 +351,7 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/amromeo/icsh_irf/tree/448c5e8e1a9e93ce3c99d560c3bc59398765640f" target="_blank">448c5e8</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/amromeo/icsh_irf/tree/0985bab439030a838b5b7303edeb85fe5ceb6f3b" target="_blank">0985bab</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
 Ignored files:
@@ -378,6 +377,8 @@ Untracked files:
 
 Unstaged changes:
     Modified:   analysis/horiba_data.Rmd
+    Modified:   analysis/irf_cor.Rmd
+    Modified:   analysis/xn_8600.Rmd
 
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
@@ -406,6 +407,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/amromeo/icsh_irf/f974a19205de912f301f9d16c6000d91407982b6/docs/irf_cor.html" target="_blank">f974a19</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-10-17
+</td>
+<td style="text-align:left;">
+html commit
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -956,6 +974,17 @@ Date
 <tbody>
 <tr>
 <td style="text-align:left;">
+<a href="https://github.com/amromeo/icsh_irf/blob/f974a19205de912f301f9d16c6000d91407982b6/docs/figure/irf_cor.Rmd/unnamed-chunk-9-1.png" target="_blank">f974a19</a>
+</td>
+<td style="text-align:left;">
+Amrom
+</td>
+<td style="text-align:left;">
+2018-10-17
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 <a href="https://github.com/amromeo/icsh_irf/blob/7a5d10bd5189677beefdb85b717255bcd9ca9ba1/docs/figure/irf_cor.Rmd/unnamed-chunk-9-1.png" target="_blank">7a5d10b</a>
 </td>
 <td style="text-align:left;">
@@ -1089,7 +1118,7 @@ Amrom
 <div id="simulated-harmonization" class="section level2">
 <h2>Simulated Harmonization</h2>
 <p>We next calculated the the coefficient of variation between measures of IRF from the instruments and after simulated harmonization. Simulated harmonization means using the results of the Passing-Bablok regression to predict how a calibration procedure would alter the results. These simultated results are then used to calculate a predicted coefficient of variation after a calibration procedure.</p>
-<p>Using the original IRF data, the CV between the methods is 0.7806848. After adjust the data using the regression equation, the CV reduces to 0.497544. This result is statistically significant (P=<code>cv_pvalue</code>)</p>
+<p>Using the original IRF data, the CV between the methods is 1.6207669. After adjust the data using the regression equation, the CV reduces to 0.1191505.</p>
 </div>
 <div id="session-information" class="section level2">
 <h2>Session information</h2>
