@@ -64,7 +64,7 @@ ggplot(gg,aes(value))+
 
 ## Plots
 
-Data was visualized with dot plots overlayed with loess smooth curve (blue) and a linear model (green). Since the linear model approximated the data well, a Deming regression was pursued on untransformed data.
+Data was visualized with dot plots overlayed with loess smooth curve (blue) and a linear model (green). Since the linear model approximated the data well, a Passing-Bablok regression was pursued on untransformed data.
 
 
 ```{r}
@@ -86,9 +86,9 @@ plot_grid(xx[[1]],xx[[2]])
 
 
 
-## Deming regression
+## Passing-Bablok regression
 
-A Deming regression model was fitted using the log transformed XN IRF data and the raw DxH data. 
+A Passing-Bablok regression model was fitted using the log transformed XN IRF data and the raw DxH data. 
 
 ```{r, results='markup'}
 
@@ -143,4 +143,44 @@ plot_grid(p1,p2)
 ```{r}
 qqnorm(df$delta_d)
 ```
+
+```{r}
+
+cv_result <- df %>% 
+  filter(irf_xn>0) %>% 
+  filter(d_irf>0) %>% 
+  filter(irf_sapphire>0) %>% 
+  mutate(log_irf_xn = log(irf_xn),
+         log_d_irf = (log(d_irf)),
+         log_irf_sapphire = (log(irf_sapphire))) %>% 
+  rowwise() %>% 
+  mutate(log_new = ((log_d_irf-log_irf_sapphire)^2)/2,
+         log_old = ((log_irf_xn-log_irf_sapphire)^2)/2) %>% 
+  ungroup %>% 
+  summarise(cv_new = exp(sqrt(mean(log_new,na.rm = TRUE)))-1,
+            cv_old = exp(sqrt(mean(log_old,na.rm = TRUE)))-1)
+
+# df %>% 
+#   rowwise() %>% 
+#   mutate(delta_old =irf_xn - irf_sapphire,
+#          delta_new = d_irf - irf_sapphire) %>% 
+#   mutate(mean_old = (irf_xn + irf_sapphire)/2,
+#          mean_new = (d_irf + irf_sapphire)/2) %>% 
+#   ungroup %>% 
+#   mutate(squ_old = (delta_old/mean_old)^2,
+#          squ_new = (delta_new/mean_new)^2) %>% 
+#   ungroup %>% 
+#   filter(squ_new<10) %>% 
+#   summarise(cv_old = sqrt(mean(squ_old,na.rm = TRUE)),
+#             cv_new = sqrt(mean(squ_new,na.rm = TRUE)))
+
+
+
+```
+
+## Simulated Harmonization
+
+We next calculated the the coefficient of variation between measures of IRF from the instruments and after simulated harmonization. Simulated harmonization means using the results of the Passing-Bablok regression to predict how a calibration procedure would alter the results. These simultated results are then used to calculate a predicted coefficient of variation after a calibration procedure.
+
+Using the original IRF data, the CV between the methods is `r cv_result$cv_old`. After adjust the data using the regression equation, the CV reduces to `r cv_result$cv_new`. 
 
